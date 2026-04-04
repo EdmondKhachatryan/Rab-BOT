@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model RoleRequest {
+  id              String   @id @default(uuid())
+  guildId         String   @map("guild_id")
+  userId          String   @map("user_id")
+  requestedRoleId String   @map("requested_role_id")
+  rank            String
+  firstName       String   @map("first_name")
+  lastName        String   @map("last_name")
+  status          String
+  reviewedBy      String?  @map("reviewed_by")
+  rejectReason    String?  @map("reject_reason")
+  modMessageId    String?  @map("mod_message_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  reviewedAt      DateTime? @map("reviewed_at")
+
+  @@index([guildId, userId])
+  @@index([status])
+  @@map("role_requests")
+}
+
+model BotSettings {
+  id             Int     @id @default(1)
+  panelMessageId String? @map("panel_message_id")
+
+  @@map("bot_settings")
+}

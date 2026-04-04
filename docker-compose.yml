@@ -1,0 +1,19 @@
+# Опционально: PostgreSQL под продакшен по регламенту проекта (п. 6.1).
+# Запуск: docker compose up -d
+# Затем см. docs/MIGRATION_POSTGRES.md — переключение Prisma с SQLite на этот инстанс.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: chopbot
+      POSTGRES_PASSWORD: chopbot_local_change_me
+      POSTGRES_DB: chopbot
+    ports:
+      - "5432:5432"
+    volumes:
+      - chopbot_pgdata:/var/lib/postgresql/data
+
+volumes:
+  chopbot_pgdata:

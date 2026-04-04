@@ -1,0 +1,35 @@
+{
+  "name": "chopbot-discord",
+  "version": "1.0.0",
+  "description": "Discord recruitment bot",
+  "main": "dist/bot.js",
+  "scripts": {
+    "dev": "tsx src/bot.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/bot.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:deploy": "prisma migrate deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "discord.js": "^14.23.2",
+    "dotenv": "^17.2.3",
+    "luxon": "^3.7.2",
+    "node-cron": "^4.2.1",
+    "pino": "^10.0.0",
+    "pino-pretty": "^13.1.2",
+    "prisma": "^6.18.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.7.1",
+    "@types/node": "^24.6.0",
+    "@types/node-cron": "^3.0.11",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
