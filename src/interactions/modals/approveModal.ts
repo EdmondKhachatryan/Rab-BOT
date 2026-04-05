@@ -79,13 +79,23 @@ export async function handleApproveModal(interaction: ModalSubmitInteraction): P
     return;
   }
 
+  /* Discord даёт ~3 с на первый ответ; выдача ролей и ник дольше — сначала defer */
+  await interaction.deferReply({ ephemeral: true });
+
   const member = await interaction.guild.members.fetch(request.userId);
-  const nickname = await applyApprovalChanges({
-    member,
-    rank: request.rank,
-    firstName: request.firstName,
-    lastName: request.lastName
-  });
+  let nickname: string;
+  try {
+    nickname = await applyApprovalChanges({
+      member,
+      rank: request.rank,
+      firstName: request.firstName,
+      lastName: request.lastName
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Ошибка при выдаче ролей или смене ника.";
+    await interaction.editReply({ content: msg });
+    return;
+  }
 
   const updated = await markApproved(request.id, interaction.user.id);
 
@@ -127,5 +137,5 @@ export async function handleApproveModal(interaction: ModalSubmitInteraction): P
     }
   }
 
-  await interaction.reply({ content: "Заявка одобрена, запись в аудит отправлена.", ephemeral: true });
+  await interaction.editReply({ content: "Заявка одобрена, запись в аудит отправлена." });
 }

@@ -63,10 +63,16 @@ client.on("interactionCreate", async (interaction: Interaction) => {
     logger.error({ err: error }, "Interaction handler failed");
     const content = "Произошла ошибка при обработке действия.";
     if (interaction.isRepliable()) {
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({ content, ephemeral: true });
-      } else {
-        await interaction.reply({ content, ephemeral: true });
+      try {
+        if (interaction.deferred) {
+          await interaction.editReply({ content });
+        } else if (interaction.replied) {
+          await interaction.followUp({ content, ephemeral: true });
+        } else {
+          await interaction.reply({ content, ephemeral: true });
+        }
+      } catch {
+        /* 10062 Unknown interaction — ответ уже невозможен */
       }
     }
   }
